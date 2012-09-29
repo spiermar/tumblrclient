@@ -263,5 +263,27 @@ class TumblrClient:
 		self.logger.info("Blog followers were retrieved successfully")
 		
 		return content
+	
+	def follow(self,url):
+		params['url'] = url
+		
+		self.logger.info("Requesting follow blog \"%s\"" % (post_id,str(params)))
+		
+		#Sending edit API request
+		content_json = self.make_oauth_request("api.tumblr.com/v2/user/follow",'POST',urllib.urlencode(params))
+		
+		if content_json is None:
+			self.logger.error("Error following blog \"%s\"" % url)
+			return False
+		
+		content = self.parse_json(content_json)
+		
+		if content is None:
+			self.logger.error("Error following blog \"%s\"" % url)
+			return False
+		
+		self.logger.info("Following blog \"%s\"" % url)
+		
+		return True
 		
 				
